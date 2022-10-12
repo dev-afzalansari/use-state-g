@@ -6,6 +6,8 @@ export default function createHook() {
   const state = useStore.state;
 
   const setter = (sliceKey) => {
+    if(typeof sliceKey === 'undefined') throw new Error('[state-hook] you must pass a key retrieve setter in setter method')
+
     const setState = (nextState) => {
       let newState =
         typeof nextState === "function"
@@ -20,6 +22,8 @@ export default function createHook() {
   };
 
   const init = (key, value) => {
+    if(typeof key === 'undefined' || typeof value === 'undefined') throw new Error('[state-hook] you must pass a key and corresponding value to the init method')
+
     const slice = state.get()[key];
     if (!slice && typeof value !== "undefined") {
       let obj = {};
@@ -31,7 +35,7 @@ export default function createHook() {
   const useState = (key, value) => {
     if (!key)
       throw new Error(
-        "[use-state] need to pass a key to retreive state and setter"
+        "[state-hook] you must pass a key to retreive state and setter"
       );
 
     const slice = state.get()[key];

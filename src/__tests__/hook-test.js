@@ -246,3 +246,50 @@ test("setter method updates the state", async () => {
   await findByText("foo skills");
   await findByText("bar");
 });
+
+test('throws an error if no key passed to the hook', () => {
+
+  expect.assertions(1)
+
+  try {
+    function Component() {
+      let [count] = useStateG()
+
+      return <h1>foo</h1>
+    }
+    render(<Component />)
+  } catch(err) {
+    expect(err.message).toBe("[state-hook] you must pass a key to retreive state and setter")
+  }
+
+})
+
+test('throws an error if no key or value passed to the init method', () => {
+
+  expect.assertions(2)
+
+  try {
+    useStateG.init()
+  } catch(err) {
+    expect(err.message).toBe("[state-hook] you must pass a key and corresponding value to the init method")
+  }
+
+  try {
+    useStateG.init("@key")
+  } catch(err) {
+    expect(err.message).toBe("[state-hook] you must pass a key and corresponding value to the init method")
+  }
+
+})
+
+test('throws an error if no key passed to the setter method', () => {
+
+  expect.assertions(1)
+
+  try {
+    useStateG.setter()
+  } catch(err) {
+    expect(err.message).toBe('[state-hook] you must pass a key retrieve setter in setter method')
+  }
+
+})

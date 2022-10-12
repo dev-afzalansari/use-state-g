@@ -8,7 +8,7 @@
   "scripts": {
     "format": "prettier src/**/*.js --write",
     "build": "rollup -c",
-    "test": "jest"
+    "test": "jest --silent"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
