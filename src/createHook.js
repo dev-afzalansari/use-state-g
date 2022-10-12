@@ -2,11 +2,11 @@ import { create } from "react-tivity";
 
 export default function createHook() {
   const useStore = create({});
-
+  const env = process.env.NODE_ENV
   const state = useStore.state;
 
   const setter = (sliceKey) => {
-    if(typeof sliceKey === 'undefined') throw new Error('[state-hook] you must pass a key retrieve setter in setter method')
+    if(typeof sliceKey === 'undefined' && env !== 'production') throw new Error('[state-hook] you must pass a key retrieve setter in setter method')
 
     const setState = (nextState) => {
       let newState =
@@ -22,7 +22,7 @@ export default function createHook() {
   };
 
   const init = (key, value) => {
-    if(typeof key === 'undefined' || typeof value === 'undefined') throw new Error('[state-hook] you must pass a key and corresponding value to the init method')
+    if(typeof key === 'undefined' || typeof value === 'undefined' && env !== 'production') throw new Error('[state-hook] you must pass a key and corresponding value to the init method')
 
     const slice = state.get()[key];
     if (!slice && typeof value !== "undefined") {
@@ -33,7 +33,7 @@ export default function createHook() {
   };
 
   const useState = (key, value) => {
-    if (!key)
+    if (!key && env !== 'production')
       throw new Error(
         "[state-hook] you must pass a key to retreive state and setter"
       );
