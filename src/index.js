@@ -1,3 +1,3 @@
 import createHook from "./createHook";
 
-export const useState = createHook();
+export const useStateG = createHook();
