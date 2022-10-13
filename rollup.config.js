@@ -21,7 +21,7 @@ function esmConfig(file) {
       },
     ],
     external: isExternal,
-    plugins: [nodeResolve({ extensions: [".ts", ".js"] })],
+    plugins: [nodeResolve({ extensions: [".js"] })],
   };
 }
 
@@ -36,7 +36,7 @@ function cjsConfig(file) {
     ],
     external: isExternal,
     plugins: [
-      nodeResolve({ extensions: [".ts", ".js"] }),
+      nodeResolve({ extensions: [".js"] }),
       babel({
         ...babelConfig,
         extensions: [".js"],
