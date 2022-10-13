@@ -2,16 +2,19 @@ import { create } from "react-tivity";
 
 export default function createHook() {
   const useStore = create({});
-  const env = process.env.NODE_ENV
+  const env = process.env.NODE_ENV;
   const state = useStore.state;
 
   const setter = (sliceKey) => {
-    if(typeof sliceKey === 'undefined' && env !== 'production') throw new Error('[state-hook] you must pass a key retrieve setter in setter method')
+    if (typeof sliceKey === "undefined" && env !== "production")
+      throw new Error(
+        "[state-hook] you must pass a key retrieve setter in setter method"
+      );
 
     const setState = (nextState) => {
       let newState =
         typeof nextState === "function"
-          ? nextState(state.get()[sliceKey])
+          ? nextState(state.get(sliceKey))
           : nextState;
       let obj = {};
       obj[sliceKey] = newState;
@@ -22,9 +25,15 @@ export default function createHook() {
   };
 
   const init = (key, value) => {
-    if(typeof key === 'undefined' || typeof value === 'undefined' && env !== 'production') throw new Error('[state-hook] you must pass a key and corresponding value to the init method')
+    if (
+      typeof key === "undefined" ||
+      (typeof value === "undefined" && env !== "production")
+    )
+      throw new Error(
+        "[state-hook] you must pass a key and corresponding value to the init method"
+      );
 
-    const slice = state.get()[key];
+    const slice = state.get(key);
     if (!slice && typeof value !== "undefined") {
       let obj = {};
       obj[key] = value;
@@ -33,18 +42,18 @@ export default function createHook() {
   };
 
   const useState = (key, value) => {
-    if (!key && env !== 'production')
+    if (!key && env !== "production")
       throw new Error(
         "[state-hook] you must pass a key to retreive state and setter"
       );
 
-    const slice = state.get()[key];
+    const slice = state.get(key);
 
     if (!slice && typeof value !== "undefined") init(key, value);
 
     useStore((s) => s[key]);
 
-    return [state.get()[key], setter(key)];
+    return [state.get(key), setter(key)];
   };
 
   Object.assign(useState, {

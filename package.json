@@ -2,13 +2,29 @@
   "name": "state-hook",
   "private": true,
   "version": "0.0.0-dev",
-  "dependencies": {
-    "react-tivity": "^0.1.0"
+  "description": "Global useState Hook",
+  "files": [
+    "package.json",
+    "README.md",
+    "LICENSE",
+    "/dist"
+  ],
+  "main": "./dist/index.js",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/esm/index.mjs",
+      "module": "./dist/esm/index.js",
+      "default": "./dist/index.js"
+    }
   },
   "scripts": {
     "format": "prettier src/**/*.js --write",
     "build": "rollup -c",
     "test": "jest --silent"
+  },
+  "dependencies": {
+    "react-tivity": "^0.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
@@ -23,5 +39,25 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rollup": "^2.79.0"
-  }
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/dev-afzalansari/state-hook",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dev-afzalansari/state-hook.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dev-afzalansari/state-hook/issues"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "keywords": [
+    "hook",
+    "global",
+    "useState",
+    "state",
+    "manager",
+    "react"
+  ]
 }
