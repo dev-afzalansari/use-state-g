@@ -1,5 +1,5 @@
 {
-  "name": "state-hook",
+  "name": "use-state-g",
   "private": true,
   "version": "0.0.0-dev",
   "description": "Global useState Hook",
@@ -41,13 +41,13 @@
     "rollup": "^2.79.0"
   },
   "license": "MIT",
-  "homepage": "https://github.com/dev-afzalansari/state-hook",
+  "homepage": "https://github.com/dev-afzalansari/use-state-g",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dev-afzalansari/state-hook.git"
+    "url": "https://github.com/dev-afzalansari/use-state-g.git"
   },
   "bugs": {
-    "url": "https://github.com/dev-afzalansari/state-hook/issues"
+    "url": "https://github.com/dev-afzalansari/use-state-g/issues"
   },
   "peerDependencies": {
     "react": ">=16.8.0"
