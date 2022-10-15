@@ -8,7 +8,7 @@ export default function createHook() {
   const setter = (sliceKey) => {
     if (typeof sliceKey === "undefined" && env !== "production")
       throw new Error(
-        "[state-hook] you must pass a key retrieve setter in setter method"
+        "[use-state-g] you must pass a key retrieve setter in setter method"
       );
 
     const setState = (nextState) => {
@@ -30,7 +30,7 @@ export default function createHook() {
       (typeof value === "undefined" && env !== "production")
     )
       throw new Error(
-        "[state-hook] you must pass a key and corresponding value to the init method"
+        "[use-state-g] you must pass a key and corresponding value to the init method"
       );
 
     const slice = state.get(key);
@@ -44,7 +44,7 @@ export default function createHook() {
   const useState = (key, value) => {
     if (!key && env !== "production")
       throw new Error(
-        "[state-hook] you must pass a key to retreive state and setter"
+        "[use-state-g] you must pass a key to retreive state and setter"
       );
 
     const slice = state.get(key);
