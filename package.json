@@ -1,6 +1,6 @@
 {
   "name": "use-state-g",
-  "private": false,
+  "private": true,
   "version": "0.1.0",
   "description": "Global useState Hook",
   "files": [
