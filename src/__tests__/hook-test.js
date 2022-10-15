@@ -259,7 +259,7 @@ test("throws an error if no key passed to the hook", () => {
     render(<Component />);
   } catch (err) {
     expect(err.message).toBe(
-      "[state-hook] you must pass a key to retreive state and setter"
+      "[use-state-g] you must pass a key to retreive state and setter"
     );
   }
 });
@@ -271,7 +271,7 @@ test("throws an error if no key or value passed to the init method", () => {
     useStateG.init();
   } catch (err) {
     expect(err.message).toBe(
-      "[state-hook] you must pass a key and corresponding value to the init method"
+      "[use-state-g] you must pass a key and corresponding value to the init method"
     );
   }
 
@@ -279,7 +279,7 @@ test("throws an error if no key or value passed to the init method", () => {
     useStateG.init("@key");
   } catch (err) {
     expect(err.message).toBe(
-      "[state-hook] you must pass a key and corresponding value to the init method"
+      "[use-state-g] you must pass a key and corresponding value to the init method"
     );
   }
 });
@@ -291,7 +291,7 @@ test("throws an error if no key passed to the setter method", () => {
     useStateG.setter();
   } catch (err) {
     expect(err.message).toBe(
-      "[state-hook] you must pass a key retrieve setter in setter method"
+      "[use-state-g] you must pass a key retrieve setter in setter method"
     );
   }
 });
