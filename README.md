@@ -5,13 +5,13 @@
 # Installation
 
 ```
-npm i state-hook
+npm i use-state-g
 ```
 
 or
 
 ```
-yarn add state-hook
+yarn add use-state-g
 ```
 
 # Hook
@@ -83,9 +83,13 @@ function ViewComponent() {
 }
 
 function ControlComponent() {
-  let setState = useStateG('@uniqueKey')  // will retreive the setter function for value assigned to `@uniqueKey`
-                                          // will not rerender if value assigned to `@uniqueKey` changes
+  let setState = useStateG.setter('@uniqueKey')  // will retreive the setter function for value assigned to `@uniqueKey`
+                                                 // will not rerender if value assigned to `@uniqueKey` changes
   
   //...
 }
 ```
+
+# License
+
+Released under [MIT License](https://github.com/dev-afzalansari/use-state-g/blob/main/LICENSE)
