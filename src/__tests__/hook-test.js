@@ -1,20 +1,20 @@
-import React from "react";
-import { fireEvent, render } from "@testing-library/react";
+import React from 'react'
+import { fireEvent, render } from '@testing-library/react'
 
-import createHook from "../createHook";
+import createHook from '../createHook'
 
-let useStateG;
+let useStateG
 
 beforeEach(() => {
-  useStateG = createHook();
-});
+  useStateG = createHook()
+})
 
-test("inits the state and returns that state", async () => {
+test('inits the state and returns that state', async () => {
   function Component() {
-    let [count] = useStateG("@count", 0);
-    let [title] = useStateG("@title", "nothing");
-    let [user] = useStateG("@user", { name: "no one", age: 22 });
-    let [skills] = useStateG("@skills", ["foo", "bar"]);
+    let [count] = useStateG('@count', 0)
+    let [title] = useStateG('@title', 'nothing')
+    let [user] = useStateG('@user', { name: 'no one', age: 22 })
+    let [skills] = useStateG('@skills', ['foo', 'bar'])
 
     return (
       <div>
@@ -25,25 +25,25 @@ test("inits the state and returns that state", async () => {
         <h1>{skills[0]}</h1>
         <h1>{skills[1]}</h1>
       </div>
-    );
+    )
   }
 
-  let { findByText } = render(<Component />);
+  let { findByText } = render(<Component />)
 
-  await findByText("0");
-  await findByText("nothing");
-  await findByText("no one");
-  await findByText("22");
-  await findByText("foo");
-  await findByText("bar");
-});
+  await findByText('0')
+  await findByText('nothing')
+  await findByText('no one')
+  await findByText('22')
+  await findByText('foo')
+  await findByText('bar')
+})
 
-test("setter updates the state", async () => {
+test('setter updates the state', async () => {
   function Component() {
-    let [count, setCount] = useStateG("@count", 0);
-    let [title, setTitle] = useStateG("@title", "nothing");
-    let [user, setUser] = useStateG("@user", { name: "no one", age: 22 });
-    let [skills, setSkills] = useStateG("@skills", ["foo", "bar"]);
+    let [count, setCount] = useStateG('@count', 0)
+    let [title, setTitle] = useStateG('@title', 'nothing')
+    let [user, setUser] = useStateG('@user', { name: 'no one', age: 22 })
+    let [skills, setSkills] = useStateG('@skills', ['foo', 'bar'])
 
     return (
       <div>
@@ -55,70 +55,70 @@ test("setter updates the state", async () => {
         <h1>{skills[1]}</h1>
         <button
           onClick={() => {
-            setCount(count + 1);
+            setCount(count + 1)
           }}
         >
           count
         </button>
         <button
           onClick={() => {
-            setTitle("something");
+            setTitle('something')
           }}
         >
           title
         </button>
         <button
           onClick={() => {
-            setUser((user) => {
-              user.name = "someone";
-              return user;
-            });
+            setUser(user => {
+              user.name = 'someone'
+              return user
+            })
           }}
         >
           user
         </button>
         <button
           onClick={() => {
-            setSkills((skills) => {
-              skills[0] = "foo skills";
-              return skills;
-            });
+            setSkills(skills => {
+              skills[0] = 'foo skills'
+              return skills
+            })
           }}
         >
           skills
         </button>
       </div>
-    );
+    )
   }
 
-  let { findByText, getByText } = render(<Component />);
+  let { findByText, getByText } = render(<Component />)
 
-  await findByText("0");
-  await findByText("nothing");
-  await findByText("no one");
-  await findByText("22");
-  await findByText("foo");
-  await findByText("bar");
+  await findByText('0')
+  await findByText('nothing')
+  await findByText('no one')
+  await findByText('22')
+  await findByText('foo')
+  await findByText('bar')
 
-  fireEvent.click(getByText("count"));
-  fireEvent.click(getByText("title"));
-  fireEvent.click(getByText("user"));
-  fireEvent.click(getByText("skills"));
+  fireEvent.click(getByText('count'))
+  fireEvent.click(getByText('title'))
+  fireEvent.click(getByText('user'))
+  fireEvent.click(getByText('skills'))
 
-  await findByText("1");
-  await findByText("something");
-  await findByText("someone");
-  await findByText("22");
-  await findByText("foo skills");
-  await findByText("bar");
-});
+  await findByText('1')
+  await findByText('something')
+  await findByText('someone')
+  await findByText('22')
+  await findByText('foo skills')
+  await findByText('bar')
+})
 
-test("init method inits the state", async () => {
+test('init method inits the state', async () => {
   function Component() {
-    let [count] = useStateG("@count");
-    let [title] = useStateG("@title");
-    let [user] = useStateG("@user");
-    let [skills] = useStateG("@skills");
+    let [count] = useStateG('@count')
+    let [title] = useStateG('@title')
+    let [user] = useStateG('@user')
+    let [skills] = useStateG('@skills')
 
     return (
       <div>
@@ -129,38 +129,38 @@ test("init method inits the state", async () => {
         <h1>{skills[0]}</h1>
         <h1>{skills[1]}</h1>
       </div>
-    );
+    )
   }
 
   function Wrapper({ children }) {
-    useStateG.init("@count", 0);
-    useStateG.init("@title", "nothing");
-    useStateG.init("@user", { name: "no one", age: 22 });
-    useStateG.init("@skills", ["foo", "bar"]);
+    useStateG.init('@count', 0)
+    useStateG.init('@title', 'nothing')
+    useStateG.init('@user', { name: 'no one', age: 22 })
+    useStateG.init('@skills', ['foo', 'bar'])
 
-    return children;
+    return children
   }
 
   let { findByText } = render(
     <Wrapper>
       <Component />
     </Wrapper>
-  );
+  )
 
-  await findByText("0");
-  await findByText("nothing");
-  await findByText("no one");
-  await findByText("22");
-  await findByText("foo");
-  await findByText("bar");
-});
+  await findByText('0')
+  await findByText('nothing')
+  await findByText('no one')
+  await findByText('22')
+  await findByText('foo')
+  await findByText('bar')
+})
 
-test("setter method updates the state", async () => {
+test('setter method updates the state', async () => {
   function Component() {
-    let [count] = useStateG("@count", 0);
-    let [title] = useStateG("@title", "nothing");
-    let [user] = useStateG("@user", { name: "no one", age: 22 });
-    let [skills] = useStateG("@skills", ["foo", "bar"]);
+    let [count] = useStateG('@count', 0)
+    let [title] = useStateG('@title', 'nothing')
+    let [user] = useStateG('@user', { name: 'no one', age: 22 })
+    let [skills] = useStateG('@skills', ['foo', 'bar'])
 
     return (
       <div>
@@ -171,53 +171,53 @@ test("setter method updates the state", async () => {
         <h1>{skills[0]}</h1>
         <h1>{skills[1]}</h1>
       </div>
-    );
+    )
   }
 
   function Control() {
-    let setCount = useStateG.setter("@count");
-    let setTitle = useStateG.setter("@title");
-    let setUser = useStateG.setter("@user");
-    let setSkills = useStateG.setter("@skills");
+    let setCount = useStateG.setter('@count')
+    let setTitle = useStateG.setter('@title')
+    let setUser = useStateG.setter('@user')
+    let setSkills = useStateG.setter('@skills')
 
     return (
       <div>
         <button
           onClick={() => {
-            setCount((count) => count + 1);
+            setCount(count => count + 1)
           }}
         >
           count
         </button>
         <button
           onClick={() => {
-            setTitle("something");
+            setTitle('something')
           }}
         >
           title
         </button>
         <button
           onClick={() => {
-            setUser((user) => {
-              user.name = "someone";
-              return user;
-            });
+            setUser(user => {
+              user.name = 'someone'
+              return user
+            })
           }}
         >
           user
         </button>
         <button
           onClick={() => {
-            setSkills((skills) => {
-              skills[0] = "foo skills";
-              return skills;
-            });
+            setSkills(skills => {
+              skills[0] = 'foo skills'
+              return skills
+            })
           }}
         >
           skills
         </button>
       </div>
-    );
+    )
   }
 
   let { findByText, getByText } = render(
@@ -225,73 +225,73 @@ test("setter method updates the state", async () => {
       <Component />
       <Control />
     </div>
-  );
+  )
 
-  await findByText("0");
-  await findByText("nothing");
-  await findByText("no one");
-  await findByText("22");
-  await findByText("foo");
-  await findByText("bar");
+  await findByText('0')
+  await findByText('nothing')
+  await findByText('no one')
+  await findByText('22')
+  await findByText('foo')
+  await findByText('bar')
 
-  fireEvent.click(getByText("count"));
-  fireEvent.click(getByText("title"));
-  fireEvent.click(getByText("user"));
-  fireEvent.click(getByText("skills"));
+  fireEvent.click(getByText('count'))
+  fireEvent.click(getByText('title'))
+  fireEvent.click(getByText('user'))
+  fireEvent.click(getByText('skills'))
 
-  await findByText("1");
-  await findByText("something");
-  await findByText("someone");
-  await findByText("22");
-  await findByText("foo skills");
-  await findByText("bar");
-});
+  await findByText('1')
+  await findByText('something')
+  await findByText('someone')
+  await findByText('22')
+  await findByText('foo skills')
+  await findByText('bar')
+})
 
-test("throws an error if no key passed to the hook", () => {
-  expect.assertions(1);
+test('throws an error if no key passed to the hook', () => {
+  expect.assertions(1)
 
   try {
     function Component() {
-      let [count] = useStateG();
+      let [count] = useStateG()
 
-      return <h1>foo</h1>;
+      return <h1>foo</h1>
     }
-    render(<Component />);
+    render(<Component />)
   } catch (err) {
     expect(err.message).toBe(
-      "[use-state-g] you must pass a key to retreive state and setter"
-    );
+      '[use-state-g] you must pass a key to retreive state and setter'
+    )
   }
-});
+})
 
-test("throws an error if no key or value passed to the init method", () => {
-  expect.assertions(2);
+test('throws an error if no key or value passed to the init method', () => {
+  expect.assertions(2)
 
   try {
-    useStateG.init();
+    useStateG.init()
   } catch (err) {
     expect(err.message).toBe(
-      "[use-state-g] you must pass a key and corresponding value to the init method"
-    );
+      '[use-state-g] you must pass a key and corresponding value to the init method'
+    )
   }
 
   try {
-    useStateG.init("@key");
+    useStateG.init('@key')
   } catch (err) {
     expect(err.message).toBe(
-      "[use-state-g] you must pass a key and corresponding value to the init method"
-    );
+      '[use-state-g] you must pass a key and corresponding value to the init method'
+    )
   }
-});
+})
 
-test("throws an error if no key passed to the setter method", () => {
-  expect.assertions(1);
+test('throws an error if no key passed to the setter method', () => {
+  expect.assertions(1)
 
   try {
-    useStateG.setter();
+    useStateG.setter()
   } catch (err) {
     expect(err.message).toBe(
-      "[use-state-g] you must pass a key retrieve setter in setter method"
-    );
+      '[use-state-g] you must pass a key retrieve setter in setter method'
+    )
   }
-});
+})

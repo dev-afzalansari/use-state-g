@@ -1,44 +1,44 @@
-import { create } from "react-tivity";
+import { create } from 'react-tivity'
 
 export default function createHook() {
-  const useStore = create({});
-  const env = process.env.NODE_ENV;
-  const state = useStore.state;
+  const useStore = create({})
+  const env = process.env.NODE_ENV
+  const state = useStore.state
 
   // setter returns a setState fn for passed key
-  const setter = (sliceKey) => {
-    if (typeof sliceKey === "undefined" && env !== "production")
+  const setter = sliceKey => {
+    if (typeof sliceKey === 'undefined' && env !== 'production')
       throw new Error(
-        "[use-state-g] you must pass a key retrieve setter in setter method"
-      );
+        '[use-state-g] you must pass a key retrieve setter in setter method'
+      )
 
-    const setState = (nextState) => {
+    const setState = nextState => {
       let newState =
-        typeof nextState === "function"
+        typeof nextState === 'function'
           ? nextState(state.get(sliceKey))
-          : nextState;
-      let obj = {};
-      obj[sliceKey] = newState;
-      state.set(obj);
-    };
+          : nextState
+      let obj = {}
+      obj[sliceKey] = newState
+      state.set(obj)
+    }
 
-    return setState;
-  };
+    return setState
+  }
 
   // to set the initial state without causing an update
   const init = (key, value) => {
     if (
-      typeof key === "undefined" ||
-      (typeof value === "undefined" && env !== "production")
+      typeof key === 'undefined' ||
+      (typeof value === 'undefined' && env !== 'production')
     )
       throw new Error(
-        "[use-state-g] you must pass a key and corresponding value to the init method"
-      );
+        '[use-state-g] you must pass a key and corresponding value to the init method'
+      )
 
-    const slice = state.get(key);
-    if (!slice && typeof value !== "undefined") {
-      let obj = {};
-      obj[key] = value;
+    const slice = state.get(key)
+    if (!slice && typeof value !== 'undefined') {
+      let obj = {}
+      obj[key] = value
       /*
       react-tivity's set method's second argument defaults to true 
       when false it only changes the state without causing an update
@@ -49,30 +49,30 @@ export default function createHook() {
       of setting the initial state while rendering parent component this 
       trick solves the issue.
       */
-      state.set(obj, false);
+      state.set(obj, false)
     }
-  };
+  }
 
   // hook
   const useState = (key, value) => {
-    if (!key && env !== "production")
+    if (!key && env !== 'production')
       throw new Error(
-        "[use-state-g] you must pass a key to retreive state and setter"
-      );
+        '[use-state-g] you must pass a key to retreive state and setter'
+      )
 
-    const slice = state.get(key);
+    const slice = state.get(key)
 
-    if (!slice && typeof value !== "undefined") init(key, value);
+    if (!slice && typeof value !== 'undefined') init(key, value)
 
-    useStore((s) => s[key]);
+    useStore(s => s[key])
 
-    return [state.get(key), setter(key)];
-  };
+    return [state.get(key), setter(key)]
+  }
 
   Object.assign(useState, {
     setter,
-    init,
-  });
+    init
+  })
 
-  return useState;
+  return useState
 }

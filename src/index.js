@@ -1,3 +1,3 @@
-import createHook from "./createHook";
+import createHook from './createHook'
 
-export const useStateG = createHook();
+export const useStateG = createHook()
