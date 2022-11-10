@@ -1,9 +1,29 @@
-import { create } from 'react-tivity'
+import createStore from './store'
+import { useMemo } from 'react'
+import { useSyncExternalStore } from 'use-sync-external-store/shim/index.js'
 
 export default function createHook() {
-  const useStore = create({})
+  const store = createStore({})
   const env = process.env.NODE_ENV
-  const state = useStore.state
+
+  const useStore = (key) => {
+
+    const getSnapshot = useMemo(() => {
+      let memoized = store.get()[key]
+      return () => {
+        let current = store.get()
+        return Object.is(memoized, current) ? memoized[key] : (memoized = current[key])
+      }
+    }, [store.get()[key]])
+
+    let state = useSyncExternalStore(
+      store.subscribe,
+      getSnapshot,
+      getSnapshot
+    )
+
+    return state
+  }
 
   // setter returns a setState fn for passed key
   const setter = sliceKey => {
@@ -15,11 +35,11 @@ export default function createHook() {
     const setState = nextState => {
       let newState =
         typeof nextState === 'function'
-          ? nextState(state.get(sliceKey))
+          ? nextState(store.get()[sliceKey])
           : nextState
       let obj = {}
       obj[sliceKey] = newState
-      state.set(obj)
+      store.set(obj)
     }
 
     return setState
@@ -35,21 +55,11 @@ export default function createHook() {
         '[use-state-g] you must pass a key and corresponding value to the init method'
       )
 
-    const slice = state.get(key)
+    const slice = store.get()[key]
     if (!slice && typeof value !== 'undefined') {
       let obj = {}
       obj[key] = value
-      /*
-      react-tivity's set method's second argument defaults to true 
-      when false it only changes the state without causing an update
-      to the subscribed components and is only needed if you wanna solve
-      this setstate-in-render problem basically when you try to update a
-      component while rendering another component react throws this error
-      https://github.com/facebook/react/issues/18178. To solve the problem
-      of setting the initial state while rendering parent component this 
-      trick solves the issue.
-      */
-      state.set(obj, false)
+      store.set(obj, false)
     }
   }
 
@@ -60,13 +70,13 @@ export default function createHook() {
         '[use-state-g] you must pass a key to retreive state and setter'
       )
 
-    const slice = state.get(key)
+    const slice = store.get()[key]
 
     if (!slice && typeof value !== 'undefined') init(key, value)
 
-    useStore(s => s[key])
+    let state = useStore(key)
 
-    return [state.get(key), setter(key)]
+    return [state, setter(key)]
   }
 
   Object.assign(useState, {

@@ -4,7 +4,7 @@ import babel from "@rollup/plugin-babel";
 const babelConfig = require('./babel.config')
 
 const isExternal = function (id) {
-  return id.startsWith("react-tivity");
+  return id.startsWith("use-sync-external-store");
 };
 
 function esmConfig(file) {

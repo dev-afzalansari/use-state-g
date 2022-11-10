@@ -69,10 +69,7 @@ test('setter updates the state', async () => {
         </button>
         <button
           onClick={() => {
-            setUser(user => {
-              user.name = 'someone'
-              return user
-            })
+            setUser(user => ({...user, name: 'someone'}))
           }}
         >
           user
@@ -80,8 +77,9 @@ test('setter updates the state', async () => {
         <button
           onClick={() => {
             setSkills(skills => {
-              skills[0] = 'foo skills'
-              return skills
+              let arr = [...skills]
+              arr[0] = 'foo skills'
+              return arr
             })
           }}
         >
@@ -198,10 +196,7 @@ test('setter method updates the state', async () => {
         </button>
         <button
           onClick={() => {
-            setUser(user => {
-              user.name = 'someone'
-              return user
-            })
+            setUser(user => ({...user, name:'someone'}))
           }}
         >
           user
@@ -209,8 +204,9 @@ test('setter method updates the state', async () => {
         <button
           onClick={() => {
             setSkills(skills => {
-              skills[0] = 'foo skills'
-              return skills
+              let arr = [...skills]
+              arr[0] = 'foo skills'
+              return arr
             })
           }}
         >
