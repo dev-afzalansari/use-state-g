@@ -6,38 +6,35 @@ export default function createHook() {
   const store = createStore({})
   const env = process.env.NODE_ENV
 
-  const useStore = (key) => {
-
+  const useStore = (key: string) => {
     const getSnapshot = useMemo(() => {
-      let memoized = store.get()[key]
+      let memoized = store.get()
       return () => {
         let current = store.get()
-        return Object.is(memoized, current) ? memoized[key] : (memoized = current[key])
+        return Object.is(memoized[key], current[key])
+          ? memoized[key]
+          : (memoized[key] = current[key])
       }
-    }, [store.get()[key]])
+    }, [store.get()[key], key])
 
-    let state = useSyncExternalStore(
-      store.subscribe,
-      getSnapshot,
-      getSnapshot
-    )
+    let state = useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot)
 
     return state
   }
 
   // setter returns a setState fn for passed key
-  const setter = sliceKey => {
+  const setter = (sliceKey: string) => {
     if (typeof sliceKey === 'undefined' && env !== 'production')
       throw new Error(
-        '[use-state-g] you must pass a key retrieve setter in setter method'
+        '[use-state-g] you must pass a key to retrieve setter in setter method'
       )
 
-    const setState = nextState => {
+    const setState = (nextState: any) => {
       let newState =
         typeof nextState === 'function'
           ? nextState(store.get()[sliceKey])
           : nextState
-      let obj = {}
+      let obj: any = {}
       obj[sliceKey] = newState
       store.set(obj)
     }
@@ -46,7 +43,7 @@ export default function createHook() {
   }
 
   // to set the initial state without causing an update
-  const init = (key, value) => {
+  const init = (key: string, value: any) => {
     if (
       typeof key === 'undefined' ||
       (typeof value === 'undefined' && env !== 'production')
@@ -57,14 +54,14 @@ export default function createHook() {
 
     const slice = store.get()[key]
     if (!slice && typeof value !== 'undefined') {
-      let obj = {}
+      let obj: any = {}
       obj[key] = value
       store.set(obj, false)
     }
   }
 
   // hook
-  const useState = (key, value) => {
+  const useState = (key: string, value?: any) => {
     if (!key && env !== 'production')
       throw new Error(
         '[use-state-g] you must pass a key to retreive state and setter'

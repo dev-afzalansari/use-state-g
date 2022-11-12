@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",                                 
+    "jsx": "react",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,                             
+    "strict": true,                                      
+    "noImplicitAny": true,
+    "baseUrl": "."
+  },
+  "include": ["./src/*"],
+  "exclude": ["./src/__tests__/*"]
+}

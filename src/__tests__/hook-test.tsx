@@ -287,7 +287,7 @@ test('throws an error if no key passed to the setter method', () => {
     useStateG.setter()
   } catch (err) {
     expect(err.message).toBe(
-      '[use-state-g] you must pass a key retrieve setter in setter method'
+      '[use-state-g] you must pass a key to retrieve setter in setter method'
     )
   }
 })

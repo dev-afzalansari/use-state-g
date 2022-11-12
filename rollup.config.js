@@ -1,15 +1,16 @@
 import nodeResolve from "@rollup/plugin-node-resolve";
 import babel from "@rollup/plugin-babel";
+import typescript from '@rollup/plugin-typescript'
 
 const babelConfig = require('./babel.config')
 
 const isExternal = function (id) {
-  return id.startsWith("use-sync-external-store");
+  return id.startsWith("use-sync-external-store") || id.startsWith('react');
 };
 
 function esmConfig(file) {
   return {
-    input: `src/${file}.js`,
+    input: `src/${file}.ts`,
     output: [
       {
         file: `dist/esm/${file}.js`,
@@ -21,13 +22,13 @@ function esmConfig(file) {
       },
     ],
     external: isExternal,
-    plugins: [nodeResolve({ extensions: [".js"] })],
+    plugins: [nodeResolve({ extensions: [".js", ".ts"] }), typescript({})],
   };
 }
 
 function cjsConfig(file) {
   return {
-    input: `src/${file}.js`,
+    input: `src/${file}.ts`,
     output: [
       {
         file: `dist/${file}.js`,
@@ -36,10 +37,10 @@ function cjsConfig(file) {
     ],
     external: isExternal,
     plugins: [
-      nodeResolve({ extensions: [".js"] }),
+      nodeResolve({ extensions: [".js", ".ts"] }),
       babel({
         ...babelConfig,
-        extensions: [".js"],
+        extensions: [".js", ".ts"],
         babelHelpers: "bundled",
       })
     ],
