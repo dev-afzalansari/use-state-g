@@ -3,7 +3,7 @@ import { fireEvent, render } from '@testing-library/react'
 
 import createHook from '../createHook'
 
-let useStateG
+let useStateG: any
 
 beforeEach(() => {
   useStateG = createHook()
@@ -69,14 +69,14 @@ test('setter updates the state', async () => {
         </button>
         <button
           onClick={() => {
-            setUser(user => ({...user, name: 'someone'}))
+            setUser((user: any) => ({...user, name: 'someone'}))
           }}
         >
           user
         </button>
         <button
           onClick={() => {
-            setSkills(skills => {
+            setSkills((skills: any) => {
               let arr = [...skills]
               arr[0] = 'foo skills'
               return arr
@@ -130,13 +130,13 @@ test('init method inits the state', async () => {
     )
   }
 
-  function Wrapper({ children }) {
+  function Wrapper({ children }: { children: React.ReactNode}) {
     useStateG.init('@count', 0)
     useStateG.init('@title', 'nothing')
     useStateG.init('@user', { name: 'no one', age: 22 })
     useStateG.init('@skills', ['foo', 'bar'])
 
-    return children
+    return <div>{children}</div>
   }
 
   let { findByText } = render(
@@ -182,7 +182,7 @@ test('setter method updates the state', async () => {
       <div>
         <button
           onClick={() => {
-            setCount(count => count + 1)
+            setCount((count: number) => count + 1)
           }}
         >
           count
@@ -196,14 +196,14 @@ test('setter method updates the state', async () => {
         </button>
         <button
           onClick={() => {
-            setUser(user => ({...user, name:'someone'}))
+            setUser((user: any) => ({...user, name:'someone'}))
           }}
         >
           user
         </button>
         <button
           onClick={() => {
-            setSkills(skills => {
+            setSkills((skills: any) => {
               let arr = [...skills]
               arr[0] = 'foo skills'
               return arr
@@ -253,7 +253,7 @@ test('throws an error if no key passed to the hook', () => {
       return <h1>foo</h1>
     }
     render(<Component />)
-  } catch (err) {
+  } catch (err: any) {
     expect(err.message).toBe(
       '[use-state-g] you must pass a key to retreive state and setter'
     )
@@ -265,7 +265,7 @@ test('throws an error if no key or value passed to the init method', () => {
 
   try {
     useStateG.init()
-  } catch (err) {
+  } catch (err: any) {
     expect(err.message).toBe(
       '[use-state-g] you must pass a key and corresponding value to the init method'
     )
@@ -273,7 +273,7 @@ test('throws an error if no key or value passed to the init method', () => {
 
   try {
     useStateG.init('@key')
-  } catch (err) {
+  } catch (err: any) {
     expect(err.message).toBe(
       '[use-state-g] you must pass a key and corresponding value to the init method'
     )
@@ -285,7 +285,7 @@ test('throws an error if no key passed to the setter method', () => {
 
   try {
     useStateG.setter()
-  } catch (err) {
+  } catch (err: any) {
     expect(err.message).toBe(
       '[use-state-g] you must pass a key to retrieve setter in setter method'
     )
