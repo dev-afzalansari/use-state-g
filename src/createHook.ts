@@ -2,6 +2,8 @@ import createStore from './store'
 import { useMemo } from 'react'
 import { useSyncExternalStore } from 'use-sync-external-store/shim/index.js'
 
+type Setter = (next: any) => void
+
 export default function createHook() {
   const store = createStore({})
   const env = process.env.NODE_ENV
@@ -23,7 +25,7 @@ export default function createHook() {
   }
 
   // setter returns a setState fn for passed key
-  const setter = (sliceKey: string) => {
+  const setter = (sliceKey: string): Setter => {
     if (typeof sliceKey === 'undefined' && env !== 'production')
       throw new Error(
         '[use-state-g] you must pass a key to retrieve setter in setter method'
@@ -43,7 +45,7 @@ export default function createHook() {
   }
 
   // to set the initial state without causing an update
-  const init = (key: string, value: any) => {
+  const init = <T>(key: string, value: T) => {
     if (
       typeof key === 'undefined' ||
       (typeof value === 'undefined' && env !== 'production')
@@ -61,7 +63,7 @@ export default function createHook() {
   }
 
   // hook
-  const useState = (key: string, value?: any) => {
+  const useStateImpl = <T = any>(key: string, value?: T): [T, Setter] => {
     if (!key && env !== 'production')
       throw new Error(
         '[use-state-g] you must pass a key to retreive state and setter'
@@ -76,7 +78,7 @@ export default function createHook() {
     return [state, setter(key)]
   }
 
-  Object.assign(useState, {
+  const useState = Object.assign(useStateImpl, {
     setter,
     init
   })

@@ -3,7 +3,7 @@ import { fireEvent, render } from '@testing-library/react'
 
 import createHook from '../createHook'
 
-let useStateG: any
+let useStateG = createHook()
 
 beforeEach(() => {
   useStateG = createHook()
@@ -248,6 +248,7 @@ test('throws an error if no key passed to the hook', () => {
 
   try {
     function Component() {
+      // @ts-expect-error
       let [count] = useStateG()
 
       return <h1>foo</h1>
@@ -264,6 +265,7 @@ test('throws an error if no key or value passed to the init method', () => {
   expect.assertions(2)
 
   try {
+    // @ts-expect-error
     useStateG.init()
   } catch (err: any) {
     expect(err.message).toBe(
@@ -272,6 +274,7 @@ test('throws an error if no key or value passed to the init method', () => {
   }
 
   try {
+    // @ts-expect-error
     useStateG.init('@key')
   } catch (err: any) {
     expect(err.message).toBe(
@@ -284,6 +287,7 @@ test('throws an error if no key passed to the setter method', () => {
   expect.assertions(1)
 
   try {
+    // @ts-expect-error
     useStateG.setter()
   } catch (err: any) {
     expect(err.message).toBe(
