@@ -17,7 +17,7 @@ yarn add use-state-g
 # Hook
 
 ```javascript
-import { useStateG } from 'state-hook'
+import { useStateG } from 'use-state-g'
 ```
 
 ## Usage
