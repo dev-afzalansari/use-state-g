@@ -243,6 +243,80 @@ test('setter method updates the state', async () => {
   await findByText('bar')
 })
 
+test('updates the subscribed components only', async () => {
+  function Count() {
+    let [count] = useStateG('@count', 0)
+    let rendered = React.useRef(0)
+    rendered.current++
+
+    return (
+      <div>
+        <h1>count: {count}</h1>
+        <h1>CountRendered: {rendered.current}</h1>
+      </div>
+    )
+  }
+
+  function Title() {
+    let [title] = useStateG('@title', 'nothing')
+    let rendered = React.useRef(0)
+    rendered.current++
+
+    return (
+      <div>
+        <h1>count: {title}</h1>
+        <h1>TitleRendered: {rendered.current}</h1>
+      </div>
+    )
+  }
+
+  function Control() {
+    let setCount = useStateG.setter('@count')
+    let setTitle = useStateG.setter('@title')
+    let rendered = React.useRef(0)
+    rendered.current++
+
+    return (
+      <div>
+        <button onClick={() => setCount((c: number) => c + 1)}>inc</button>
+        <button onClick={() => setCount((c: number) => c - 1)}>dec</button>
+        <button onClick={() => setTitle('something')}>change</button>
+        <h1>ControlRendered: {rendered.current}</h1>
+      </div>
+    )
+  }
+
+  let { findByText, getByText } = render(
+    <div>
+      <Count />
+      <Title />
+      <Control />
+    </div>
+  )
+
+  await findByText('CountRendered: 1')
+  await findByText('TitleRendered: 1')
+  await findByText('ControlRendered: 1')
+
+  fireEvent.click(getByText('inc'))
+
+  await findByText('CountRendered: 2')
+  await findByText('TitleRendered: 1')
+  await findByText('ControlRendered: 1')
+
+  fireEvent.click(getByText('change'))
+
+  await findByText('CountRendered: 2')
+  await findByText('TitleRendered: 2')
+  await findByText('ControlRendered: 1')
+
+  fireEvent.click(getByText('dec'))
+
+  await findByText('CountRendered: 3')
+  await findByText('TitleRendered: 2')
+  await findByText('ControlRendered: 1')
+})
+
 test('throws an error if no key passed to the hook', () => {
   expect.assertions(1)
 
